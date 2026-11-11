@@ -1,0 +1,913 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#060817">
+  <meta name="description" content="Uncovering the truth through powerful stories and community advocacy for a fair and accountable betting industry.">
+  <title>BIGJN — The Voice for Fair Play</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: dark;
+      --ink: #060817;
+      --ink-soft: #0c1022;
+      --paper: #f6f5f2;
+      --muted: #a4a8ba;
+      --gold: #d3a50c;
+      --line: rgba(255,255,255,.1);
+      --serif: "Playfair Display", Georgia, serif;
+      --sans: "DM Sans", Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 40px; }
+    body {
+      margin: 0;
+      background: var(--ink);
+      color: var(--paper);
+      font-family: var(--sans);
+      -webkit-font-smoothing: antialiased;
+    }
+    body.menu-open { overflow: hidden; }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; }
+    .wrap { width: min(1240px, calc(100% - 96px)); margin-inline: auto; }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+    }
+    .eyebrow::before { width: 7px; height: 7px; border-radius: 50%; background: var(--gold); content: ""; }
+    .skip-link { position: absolute; z-index: 30; top: 10px; left: 10px; padding: 12px; transform: translateY(-160%); background: #fff; color: var(--ink); }
+    .skip-link:focus { transform: translateY(0); }
+
+    .menu-button {
+      position: fixed;
+      z-index: 20;
+      top: 40px;
+      right: max(40px, calc((100vw - 1240px) / 2));
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      padding: 17px 25px 17px 30px;
+      color: var(--paper);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 100px;
+      background: rgba(14,17,36,.72);
+      backdrop-filter: blur(16px);
+      cursor: pointer;
+      font-size: 11px;
+      letter-spacing: .28em;
+      transition: border-color .25s, background .25s;
+    }
+    .menu-button:hover { border-color: rgba(211,165,12,.55); background: rgba(14,17,36,.95); }
+    .menu-icon { display: grid; gap: 5px; }
+    .menu-icon span { width: 19px; height: 1px; background: var(--gold); transition: transform .25s; }
+    .menu-button[aria-expanded="true"] .menu-icon span:first-child { transform: translateY(3px) rotate(45deg); }
+    .menu-button[aria-expanded="true"] .menu-icon span:last-child { transform: translateY(-3px) rotate(-45deg); }
+    .menu-panel {
+      position: fixed;
+      z-index: 19;
+      inset: 0;
+      display: grid;
+      align-content: center;
+      justify-items: end;
+      padding: 100px max(56px, calc((100vw - 1240px) / 2));
+      background: rgba(5,7,19,.97);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity .3s, visibility .3s;
+    }
+    .menu-panel.open { opacity: 1; visibility: visible; }
+    .menu-panel nav { display: grid; gap: 12px; }
+    .menu-panel a {
+      font-family: var(--serif);
+      font-size: clamp(38px, 6vw, 72px);
+      font-weight: 600;
+      transition: color .2s, transform .2s;
+    }
+    .menu-panel a:hover { color: var(--gold); transform: translateX(8px); }
+    .menu-note { margin-top: 45px; color: var(--muted); font-size: 10px; letter-spacing: .18em; text-transform: uppercase; }
+
+    .hero {
+      position: relative;
+      display: flex;
+      min-height: 820px;
+      min-height: min(960px, 100svh);
+      align-items: center;
+      overflow: hidden;
+      isolation: isolate;
+      padding: 130px 0 90px;
+    }
+    .hero::before {
+      position: absolute;
+      z-index: -2;
+      inset: 0;
+      background: url("hero-bg.jpg") center 48% / cover no-repeat;
+      content: "";
+      opacity: .43;
+    }
+    .hero::after {
+      position: absolute;
+      z-index: -1;
+      inset: 0;
+      background:
+        linear-gradient(90deg, #060817 0%, rgba(6,8,23,.95) 31%, rgba(6,8,23,.49) 71%, rgba(6,8,23,.27) 100%),
+        linear-gradient(0deg, #060817 0%, transparent 35%, rgba(6,8,23,.15) 100%);
+      content: "";
+    }
+    .hero-grid { display: grid; grid-template-columns: 1fr .88fr; align-items: center; gap: 5vw; }
+    .hero-copy { position: relative; z-index: 1; max-width: 700px; }
+    .hero-copy .eyebrow { margin-bottom: 27px; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 {
+      margin-bottom: 25px;
+      font-family: var(--serif);
+      font-size: clamp(68px, 8.3vw, 114px);
+      font-weight: 600;
+      letter-spacing: -.055em;
+      line-height: .96;
+    }
+    .gold { color: var(--gold); }
+    .italic { font-style: italic; }
+    .hero-copy > p { max-width: 590px; margin-bottom: 32px; color: #b6b9c9; font-size: clamp(17px, 1.8vw, 22px); line-height: 1.85; }
+    .actions { display: flex; flex-wrap: wrap; gap: 14px; }
+    .button {
+      display: inline-flex;
+      min-height: 57px;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 0 28px;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      background: rgba(14,17,36,.58);
+      color: var(--paper);
+      font-size: 13px;
+      font-weight: 600;
+      transition: transform .2s, background .2s, border-color .2s;
+    }
+    .button:hover { transform: translateY(-2px); border-color: rgba(211,165,12,.65); }
+    .button-primary { background: var(--paper); color: var(--ink); border-color: var(--paper); }
+    .button-primary:hover { background: var(--gold); border-color: var(--gold); }
+    .arrow { font-size: 18px; line-height: 1; }
+
+    .impact-card {
+      width: min(100%, 495px);
+      justify-self: end;
+      padding: 32px 38px 28px;
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 20px;
+      background: linear-gradient(135deg, rgba(42,43,50,.78), rgba(15,18,34,.72));
+      box-shadow: 0 22px 80px rgba(0,0,0,.24);
+      backdrop-filter: blur(18px);
+    }
+    .impact-top { display: flex; align-items: center; gap: 18px; }
+    .target-icon {
+      display: grid;
+      width: 58px;
+      height: 58px;
+      place-items: center;
+      border-radius: 15px;
+      background: rgba(211,165,12,.11);
+      color: var(--gold);
+      font-size: 25px;
+    }
+    .impact-top strong { display: block; font-family: var(--serif); font-size: 34px; }
+    .impact-top span { color: var(--muted); font-size: 12px; letter-spacing: .1em; }
+    .reach { margin-top: 31px; }
+    .reach-heading { display: flex; justify-content: space-between; font-size: 14px; }
+    .reach-heading span:last-child { color: var(--gold); }
+    .meter { height: 4px; margin-top: 12px; border-radius: 5px; background: rgba(255,255,255,.1); }
+    .meter span { display: block; width: 85%; height: 100%; border-radius: inherit; background: var(--gold); }
+    .values { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 30px; padding-top: 26px; border-top: 1px solid var(--line); }
+    .value { display: grid; justify-items: center; gap: 10px; color: #a9adbd; font-size: 10px; letter-spacing: .12em; text-align: center; }
+    .value b { color: var(--gold); font-size: 20px; font-weight: 400; }
+    .support-note { margin: 24px 0 0; color: #c0c2ce; font-size: 9px; letter-spacing: .23em; text-align: center; }
+    .scroll-cue { position: absolute; bottom: 28px; left: 50%; color: var(--muted); font-size: 9px; letter-spacing: .25em; text-transform: uppercase; transform: translateX(-50%); }
+    .scroll-cue::after { display: block; width: 1px; height: 27px; margin: 10px auto 0; background: var(--gold); content: ""; }
+
+    .stats { padding: 37px 0 44px; border-top: 1px solid rgba(255,255,255,.05); border-bottom: 1px solid rgba(255,255,255,.05); background: #080b1b; }
+    .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; }
+    .stat { display: flex; align-items: baseline; justify-content: center; gap: 12px; }
+    .stat strong { color: var(--gold); font-family: var(--serif); font-size: clamp(32px, 4vw, 51px); font-weight: 500; }
+    .stat span { max-width: 140px; color: var(--muted); font-size: 11px; line-height: 1.5; }
+
+    section.content-section { padding: 120px 0; }
+    .section-heading { max-width: 760px; margin: 0 auto 75px; text-align: center; }
+    .section-heading h2 {
+      margin-bottom: 18px;
+      font-family: var(--serif);
+      font-size: clamp(44px, 6vw, 70px);
+      font-weight: 600;
+      letter-spacing: -.045em;
+      line-height: 1.08;
+    }
+    .section-heading p { margin-bottom: 0; color: var(--muted); font-size: 16px; line-height: 1.75; }
+    .pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; }
+    .pillar {
+      min-height: 270px;
+      border: 1px solid rgba(255,255,255,.07);
+      border-radius: 23px;
+      background: radial-gradient(ellipse at 82% 25%, rgba(211,165,12,.1), transparent 30%), linear-gradient(145deg, rgba(255,255,255,.11), rgba(18,22,42,.65) 45%);
+      transition: border-color .3s, background .3s;
+    }
+    .pillar:hover, .pillar[open] { border-color: rgba(211,165,12,.38); }
+    .pillar-toggle { display: block; min-height: 270px; padding: 38px 35px 30px; cursor: pointer; list-style: none; }
+    .pillar-toggle::-webkit-details-marker { display: none; }
+    .pillar-toggle:focus-visible { outline: 2px solid var(--gold); outline-offset: -5px; border-radius: inherit; }
+    .pillar-icon { display: grid; width: 50px; height: 50px; margin-bottom: 28px; place-items: center; border: 1px solid rgba(211,165,12,.22); color: var(--gold); font-size: 17px; transition: background .25s, transform .35s; }
+    .pillar[open] .pillar-icon { transform: rotate(45deg); background: rgba(211,165,12,.1); }
+    .pillar h3 { margin-bottom: 12px; font-family: var(--serif); font-size: 27px; line-height: 1.2; }
+    .pillar-summary { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.8; }
+    .pillar-more { display: inline-flex; align-items: center; gap: 8px; margin-top: 21px; color: var(--gold); font-size: 9px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+    .pillar-more::after { content: "+"; font-size: 16px; font-weight: 400; transition: transform .25s; }
+    .pillar[open] .pillar-more::after { transform: rotate(45deg); }
+    .pillar-details { padding: 0 35px 30px; animation: pillar-reveal .25s ease-out; }
+    .pillar-details p { margin: 0 0 14px; color: #c1c4d0; font-size: 13px; line-height: 1.8; }
+    .pillar-details h4 { margin: 19px 0 9px; color: var(--paper); font-family: var(--serif); font-size: 18px; }
+    .pillar-details ul { display: grid; gap: 9px; margin: 0; padding: 0; list-style: none; }
+    .pillar-details li { position: relative; padding-left: 16px; color: var(--muted); font-size: 12px; line-height: 1.65; }
+    .pillar-details li::before { position: absolute; top: .65em; left: 0; width: 6px; height: 1px; background: var(--gold); content: ""; }
+    .pillar-link { display: inline-flex; margin-top: 19px; color: var(--gold); font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+    .pillar-link:hover { text-decoration: underline; }
+    @keyframes pillar-reveal { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+
+    .image-section { padding: 105px 0; border-top: 1px solid rgba(255,255,255,.05); }
+    .image-section.alt { background: #080b1b; }
+    .image-section-heading { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: 42px; }
+    .image-section-heading h2 { margin: 0; font-family: var(--serif); font-size: clamp(42px, 6vw, 70px); font-weight: 600; letter-spacing: -.045em; line-height: 1.05; }
+    .section-link { padding-bottom: 8px; border-bottom: 1px solid var(--line); color: var(--muted); font-size: 10px; letter-spacing: .2em; text-transform: uppercase; white-space: nowrap; transition: color .2s, border-color .2s; }
+    .section-link:hover { border-color: var(--gold); color: var(--gold); }
+    .image-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+    .image-card { display: flex; min-width: 0; flex-direction: column; overflow: hidden; border: 1px solid rgba(255,255,255,.08); border-radius: 12px; background: linear-gradient(145deg, rgba(255,255,255,.055), rgba(255,255,255,.012)); transition: transform .3s, border-color .3s; }
+    .image-card:hover { transform: translateY(-5px); border-color: rgba(211,165,12,.35); }
+    .image-card-photo { position: relative; overflow: hidden; aspect-ratio: 4 / 3; background: var(--ink-soft); }
+    .blog-grid .image-card-photo { aspect-ratio: 16 / 10; }
+    .image-card-photo img { display: block; width: 100%; height: 100%; object-fit: cover; filter: grayscale(65%); transition: transform .65s, filter .4s; }
+    .image-card:hover .image-card-photo img { transform: scale(1.06); filter: grayscale(0); }
+    .image-card-photo::after { position: absolute; inset: 45% 0 0; background: linear-gradient(transparent, rgba(6,8,23,.55)); content: ""; pointer-events: none; }
+    .image-card-copy { display: flex; flex: 1; flex-direction: column; align-items: start; padding: 27px 28px 25px; }
+    .image-card-rule { width: 34px; height: 1px; margin-bottom: 17px; background: var(--gold); transition: width .4s; }
+    .image-card:hover .image-card-rule { width: 100%; }
+    .image-card h3 { margin: 0 0 12px; font-family: var(--serif); font-size: clamp(21px, 2vw, 27px); font-weight: 600; line-height: 1.25; transition: color .2s; }
+    .image-card:hover h3 { color: var(--gold); }
+    .image-card p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.75; }
+    .image-card-cta { display: inline-flex; align-items: center; gap: 9px; margin-top: 24px; color: var(--gold); font-size: 9px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; }
+    .blog-category { margin-bottom: 12px; color: var(--gold); font-size: 9px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; }
+    .blog-card h3 { font-size: 23px; }
+    .blog-date { margin-top: 18px !important; color: #777d92 !important; font-size: 10px !important; letter-spacing: .1em; }
+
+    .chapters { padding: 105px 0; overflow: hidden; border-top: 1px solid rgba(255,255,255,.05); border-bottom: 1px solid rgba(255,255,255,.05); background: radial-gradient(ellipse at 50% 0%, rgba(211,165,12,.06), transparent 40%), #080b1b; }
+    .chapter-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+    .chapter {
+      min-width: 0;
+      padding: 30px 26px 26px;
+      border: 1px solid rgba(255,255,255,.09);
+      border-radius: 12px;
+      background: linear-gradient(150deg, rgba(255,255,255,.055), rgba(255,255,255,.012) 72%);
+      transition: transform .25s, border-color .25s, background .25s;
+    }
+    .chapter:hover { transform: translateY(-4px); border-color: rgba(211,165,12,.35); background: linear-gradient(150deg, rgba(211,165,12,.075), rgba(255,255,255,.015) 72%); }
+    .chapter-number { display: inline-flex; align-items: center; gap: 10px; color: var(--gold); font-size: 9px; font-weight: 700; letter-spacing: .22em; }
+    .chapter-number::before { width: 21px; height: 1px; background: var(--gold); content: ""; }
+    .chapter h3 { margin: 24px 0 5px; font-family: var(--serif); font-size: clamp(34px, 3.4vw, 45px); font-weight: 600; letter-spacing: -.04em; line-height: 1.04; }
+    .chapter-subtitle { margin: 0; color: var(--gold); font-family: var(--serif); font-size: 17px; font-style: italic; line-height: 1.45; }
+    .chapter-intro { min-height: 67px; margin: 17px 0 23px; color: var(--muted); font-size: 12px; line-height: 1.8; }
+    .chapter-stories { display: grid; }
+    .chapter-story { padding: 16px 0; border-top: 1px solid rgba(255,255,255,.09); }
+    .chapter-story-label { display: block; margin-bottom: 7px; color: #8d92a7; font-size: 8px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; }
+    .chapter-story h4 { margin: 0 0 6px; color: var(--paper); font-family: var(--serif); font-size: 18px; font-weight: 600; line-height: 1.35; }
+    .chapter-story p { margin: 0; color: var(--muted); font-size: 11px; line-height: 1.7; }
+    .chapter-more { display: inline-flex; align-items: center; gap: 9px; margin-top: 12px; color: var(--gold); font-size: 9px; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; }
+    .chapter-more span { font-size: 16px; transition: transform .2s; }
+    .chapter-more:hover span { transform: translateX(4px); }
+
+    .audiences { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .audience { display: flex; min-height: 330px; flex-direction: column; padding: 42px 38px; border: 1px solid rgba(255,255,255,.08); background: linear-gradient(145deg, rgba(255,255,255,.04), rgba(255,255,255,.012)); transition: border-color .25s, background .25s; }
+    .audience:hover { border-color: rgba(211,165,12,.35); background: rgba(255,255,255,.035); }
+    .audience-rule { width: 38px; height: 1px; margin-bottom: 31px; background: var(--gold); }
+    .audience h3 { margin-bottom: 13px; font-family: var(--serif); font-size: 32px; }
+    .audience p { flex: 1; color: var(--muted); font-size: 14px; line-height: 1.8; }
+    .access { display: flex; align-items: center; gap: 10px; padding: 13px 15px; border: 1px solid rgba(255,255,255,.09); border-radius: 5px; color: #dedee4; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; }
+    .access::before { width: 7px; height: 7px; border-radius: 50%; background: var(--gold); content: ""; }
+
+    .community { padding: 110px 0 125px; text-align: center; }
+    .community .eyebrow::before { display: none; }
+    .quote { max-width: 1000px; margin: 24px auto 55px; font-family: var(--serif); font-size: clamp(30px, 4.7vw, 55px); font-style: italic; line-height: 1.35; }
+    .partners { display: flex; flex-wrap: wrap; justify-content: center; gap: 30px clamp(35px, 7vw, 100px); color: #82869a; font-family: var(--serif); font-size: 17px; font-style: italic; }
+    .join { padding: 105px 0 115px; border-top: 1px solid rgba(255,255,255,.08); text-align: center; }
+    .join h2 { margin: 21px 0; font-family: var(--serif); font-size: clamp(47px, 7vw, 82px); letter-spacing: -.05em; }
+    .join p { max-width: 650px; margin: 0 auto 32px; color: var(--muted); font-size: 16px; line-height: 1.8; }
+    .contact-section { padding: 105px 0 115px; overflow: hidden; border-top: 1px solid rgba(255,255,255,.08); background: radial-gradient(ellipse at 85% 0%, rgba(211,165,12,.075), transparent 36%), #080b1b; }
+    .contact-section, .contact-section * { min-width: 0; }
+    .contact-heading { max-width: 820px; margin-bottom: 48px; }
+    .contact-heading h2 { margin: 20px 0 18px; font-family: var(--serif); font-size: clamp(44px, 7vw, 78px); font-weight: 600; letter-spacing: -.05em; line-height: 1.04; }
+    .contact-heading > p { max-width: 700px; margin: 0; color: var(--muted); font-size: 16px; line-height: 1.8; }
+    .contact-summary { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-bottom: 50px; }
+    .contact-summary-item { padding: 20px 22px; border: 1px solid rgba(255,255,255,.08); border-radius: 10px; background: rgba(255,255,255,.025); }
+    .contact-summary-item span { display: block; margin-bottom: 9px; color: var(--muted); font-size: 9px; font-weight: 600; letter-spacing: .17em; text-transform: uppercase; }
+    .contact-summary-item strong { font-family: var(--serif); font-size: clamp(16px, 2vw, 21px); font-weight: 500; overflow-wrap: anywhere; }
+    .contact-layout { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); align-items: start; gap: 26px; }
+    .contact-paths, .contact-form { padding: clamp(23px, 4vw, 38px); border: 1px solid rgba(255,255,255,.09); border-radius: 14px; background: linear-gradient(145deg, rgba(255,255,255,.065), rgba(255,255,255,.018)); }
+    .contact-panel-heading { margin-bottom: 24px; }
+    .contact-panel-heading span { color: var(--gold); font-size: 9px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; }
+    .contact-panel-heading h3 { margin: 10px 0 0; font-family: var(--serif); font-size: clamp(25px, 3vw, 34px); font-weight: 500; line-height: 1.2; }
+    .contact-path-list { display: grid; gap: 12px; }
+    .contact-path { display: grid; grid-template-columns: 42px minmax(0, 1fr); align-items: start; gap: 14px; padding: 17px; border: 1px solid rgba(255,255,255,.07); border-radius: 9px; background: rgba(6,8,23,.4); }
+    .contact-path-icon { display: grid; width: 40px; height: 40px; place-items: center; border: 1px solid rgba(211,165,12,.18); border-radius: 50%; color: var(--gold); font-size: 14px; }
+    .contact-path h4 { margin: 1px 0 6px; font-family: var(--serif); font-size: 18px; font-weight: 600; }
+    .contact-path p { margin: 0 0 7px; color: var(--muted); font-size: 12px; line-height: 1.65; }
+    .contact-path a { color: var(--gold); font-size: 12px; overflow-wrap: anywhere; }
+    .contact-path a:hover { text-decoration: underline; }
+    .contact-guidance { display: grid; gap: 10px; margin-top: 20px; }
+    .contact-guidance p { margin: 0; padding: 13px 15px; border-left: 2px solid rgba(211,165,12,.55); background: rgba(255,255,255,.025); color: var(--muted); font-size: 12px; line-height: 1.65; }
+    .contact-form { display: grid; gap: 17px; }
+    .contact-form .contact-panel-heading { margin-bottom: 0; }
+    .contact-fields-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+    .contact-field { display: grid; gap: 8px; }
+    .contact-field label { color: #e4e3e1; font-size: 11px; font-weight: 600; }
+    .contact-field input, .contact-field select, .contact-field textarea {
+      display: block;
+      width: 100%;
+      max-width: 100%;
+      min-height: 48px;
+      padding: 12px 14px;
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 6px;
+      outline: none;
+      background: rgba(6,8,23,.68);
+      color: var(--paper);
+      font: 13px var(--sans);
+    }
+    .contact-field textarea { min-height: 145px; resize: vertical; line-height: 1.65; }
+    .contact-field input::placeholder, .contact-field textarea::placeholder { color: #777d91; }
+    .contact-field input:focus, .contact-field select:focus, .contact-field textarea:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(211,165,12,.12); }
+    .contact-submit { justify-self: start; min-height: 51px; border: 0; cursor: pointer; }
+    .contact-form-note { margin: -5px 0 0; color: #858b9f; font-size: 10px; line-height: 1.6; }
+    .contact-status { min-height: 1.2em; margin: 0; color: var(--gold); font-size: 12px; }
+    footer { padding: 45px 0 27px; border-top: 1px solid rgba(255,255,255,.08); background: #080b1b; }
+    .footer-grid { display: grid; grid-template-columns: 1.6fr 1fr 1fr; gap: 45px; padding-bottom: 42px; }
+    .brand { margin: 0 0 13px; color: var(--gold); font-family: var(--serif); font-size: 25px; font-style: italic; }
+    .footer-blurb { max-width: 400px; margin: 0; color: var(--muted); font-size: 13px; line-height: 1.8; }
+    .footer-title { margin-bottom: 16px; color: var(--paper); font-size: 10px; letter-spacing: .16em; text-transform: uppercase; }
+    .footer-links { display: grid; gap: 11px; color: var(--muted); font-size: 13px; }
+    .footer-links a:hover { color: var(--gold); }
+    .copyright { padding-top: 23px; border-top: 1px solid rgba(255,255,255,.08); color: #73788e; font-size: 11px; text-align: center; }
+
+    @media (max-width: 900px) {
+      .hero { min-height: 900px; }
+      .hero-grid { grid-template-columns: 1fr; gap: 45px; }
+      .impact-card { justify-self: start; width: min(100%, 520px); }
+      .hero::after { background: linear-gradient(90deg, rgba(6,8,23,.96), rgba(6,8,23,.68)), linear-gradient(0deg, #060817, transparent 80%); }
+      .pillars { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+      .audiences { gap: 16px; }
+      .pillar, .audience { padding: 32px 27px; }
+      .pillar h3, .audience h3 { font-size: 26px; }
+      .image-grid { gap: 15px; }
+      .image-card-copy { padding: 22px 20px; }
+      .contact-layout { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+      .chapter-list { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+      .chapter-intro { min-height: 0; }
+    }
+    @media (max-width: 640px) {
+      .wrap { width: calc(100% - 40px); }
+      .menu-button { top: 18px; right: 20px; padding: 13px 17px 13px 20px; }
+      .hero { min-height: auto; padding: 145px 0 82px; }
+      .hero-grid { gap: 40px; }
+      .hero-copy .eyebrow { font-size: 9px; letter-spacing: .16em; }
+      h1 { font-size: clamp(57px, 16vw, 82px); }
+      .hero-copy > p { font-size: 16px; line-height: 1.75; }
+      .button { min-height: 53px; padding-inline: 19px; font-size: 12px; }
+      .impact-card { padding: 25px 22px 23px; border-radius: 16px; }
+      .target-icon { width: 49px; height: 49px; }
+      .impact-top strong { font-size: 30px; }
+      .support-note { font-size: 8px; letter-spacing: .15em; }
+      .scroll-cue { display: none; }
+      .stats { padding: 28px 0; }
+      .stats-grid { grid-template-columns: 1fr; gap: 17px; }
+      .stat { justify-content: flex-start; }
+      .stat strong { width: 100px; font-size: 38px; text-align: right; }
+      section.content-section { padding: 82px 0; }
+      .section-heading { margin-bottom: 43px; }
+      .section-heading h2 { font-size: 46px; }
+      .section-heading p { font-size: 14px; }
+      .pillars, .audiences { grid-template-columns: 1fr; gap: 14px; }
+      .pillar { min-height: 0; }
+      .pillar-toggle { min-height: 0; padding: 28px 25px 24px; }
+      .pillar-icon { margin-bottom: 22px; }
+      .pillar-details { padding: 0 25px 25px; }
+      .image-section { padding: 82px 0; }
+      .image-section-heading { align-items: start; flex-direction: column; margin-bottom: 32px; }
+      .image-grid { grid-template-columns: 1fr; gap: 18px; }
+      .image-card-copy { padding: 25px 24px; }
+      .chapter { padding: 25px 22px; }
+      .chapter h3 { margin-top: 19px; font-size: 39px; }
+      .audience { min-height: 270px; }
+      .community { padding: 82px 0; }
+      .quote { margin: 22px auto 40px; }
+      .partners { gap: 24px 30px; font-size: 15px; }
+      .join { padding: 80px 0; }
+      .join p { font-size: 14px; }
+      .contact-section { padding: 78px 0 84px; }
+      .contact-heading { margin-bottom: 32px; }
+      .contact-heading h2 { font-size: clamp(41px, 12vw, 57px); }
+      .contact-heading > p { font-size: 14px; }
+      .contact-summary { grid-template-columns: minmax(0, 1fr); gap: 9px; margin-bottom: 28px; }
+      .contact-summary-item { padding: 15px 17px; }
+      .contact-summary-item strong { font-size: 18px; }
+      .contact-paths, .contact-form { padding: 21px 17px; }
+      .contact-fields-row { grid-template-columns: minmax(0, 1fr); }
+      .contact-submit { width: 100%; }
+      .footer-grid { grid-template-columns: 1fr 1fr; gap: 30px 20px; }
+      .footer-about { grid-column: 1 / -1; }
+      .menu-panel { justify-items: start; padding: 100px 28px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <button class="menu-button" type="button" aria-expanded="false" aria-controls="menu-panel">
+    <span>MENU</span><span class="menu-icon" aria-hidden="true"><span></span><span></span></span>
+  </button>
+  <div class="menu-panel" id="menu-panel" aria-hidden="true">
+    <div>
+      <nav aria-label="Main navigation">
+        <a href="#home">HOME</a>
+        <a href="research.html">RESEARCH</a>
+        <a href="our-work.html">OUR WORK</a>
+        <a href="community.html">COMMUNITY</a>
+        <a href="contact.html">CONTACT</a>
+      </nav>
+      <p class="menu-note">The voice for fair play</p>
+    </div>
+  </div>
+
+  <main id="main">
+    <section class="hero" id="home">
+      <div class="wrap hero-grid">
+        <div class="hero-copy">
+          <span class="eyebrow">Advocacy &amp; Investigative Journalism</span>
+          <h1>The Voice for<br><span class="gold italic">Fair Play.</span><br>Fighting for<br>Justice.</h1>
+          <p>Uncovering the truth through powerful stories and community advocacy for a fair and accountable betting industry.</p>
+          <div class="actions">
+            <a class="button button-primary" href="research.html">Read the Blog <span class="arrow" aria-hidden="true">→</span></a>
+            <a class="button" href="community.html"><span aria-hidden="true">♧</span> Join the Movement</a>
+          </div>
+        </div>
+        <aside class="impact-card" aria-label="BIGJN impact">
+          <div class="impact-top">
+            <div class="target-icon" aria-hidden="true">◎</div>
+            <div><strong>500+</strong><span>STORIES PUBLISHED</span></div>
+          </div>
+          <div class="reach">
+            <div class="reach-heading"><span>Community Reach</span><span>85%</span></div>
+            <div class="meter" aria-label="Community reach: 85%"><span></span></div>
+          </div>
+          <div class="values">
+            <div class="value"><b aria-hidden="true">♧</b><span>ADVOCACY</span></div>
+            <div class="value"><b aria-hidden="true">◇</b><span>TRUTH</span></div>
+            <div class="value"><b aria-hidden="true">ϟ</b><span>COMMUNITY</span></div>
+          </div>
+          <p class="support-note">SUPPORTED BY GLOBAL ADVOCACY GROUPS</p>
+        </aside>
+      </div>
+      <a class="scroll-cue" href="#impact">Scroll</a>
+    </section>
+
+    <section class="stats" id="impact" aria-label="The impact of gambling">
+      <div class="wrap stats-grid">
+        <div class="stat"><strong>$340B</strong><span>lost to predatory gambling practices</span></div>
+        <div class="stat"><strong>$71M</strong><span>lives impacted demanding change</span></div>
+        <div class="stat"><strong>78%</strong><span>unregulated markets leaving people vulnerable</span></div>
+      </div>
+    </section>
+
+    <section class="content-section" id="pillars">
+      <div class="wrap">
+        <header class="section-heading">
+          <h2><span class="italic">Driving</span> <span class="gold">Change</span></h2>
+          <p>Core pillars that transform community stories into decisive policy and public outcomes.</p>
+        </header>
+        <div class="pillars">
+          <details class="pillar">
+            <summary class="pillar-toggle">
+              <span class="pillar-icon" aria-hidden="true">◆</span>
+              <h3>Investigative Blogging</h3>
+              <p class="pillar-summary">Uncovering hidden practices and publishing the stories that matter.</p>
+              <span class="pillar-more">Explore our reporting</span>
+            </summary>
+            <div class="pillar-details">
+              <p>We follow the evidence behind the betting industry, examine decisions that affect consumers, and make complex findings clear to the public.</p>
+              <h4>What this work includes</h4>
+              <ul>
+                <li>Reviewing public records, research, policies, and first-hand accounts.</li>
+                <li>Investigating advertising, consumer terms, safer-play tools, and market oversight.</li>
+                <li>Publishing sourced reporting that distinguishes documented facts from open questions.</li>
+              </ul>
+              <a class="pillar-link" href="research.html">Visit Research <span aria-hidden="true">→</span></a>
+            </div>
+          </details>
+          <details class="pillar">
+            <summary class="pillar-toggle">
+              <span class="pillar-icon" aria-hidden="true">◆</span>
+              <h3>Community Advocacy</h3>
+              <p class="pillar-summary">Empowering voices to demand legislative reform and accountability.</p>
+              <span class="pillar-more">Explore community work</span>
+            </summary>
+            <div class="pillar-details">
+              <p>People closest to an issue bring essential context. We help surface those perspectives and connect them with evidence that can inform public discussion.</p>
+              <h4>How we support advocacy</h4>
+              <ul>
+                <li>Elevating lived experience respectfully and with care for contributors.</li>
+                <li>Connecting community concerns with research, policy, and public accountability.</li>
+                <li>Making room for constructive dialogue among advocates, researchers, and decision makers.</li>
+              </ul>
+              <a class="pillar-link" href="community.html">Visit Community <span aria-hidden="true">→</span></a>
+            </div>
+          </details>
+          <details class="pillar">
+            <summary class="pillar-toggle">
+              <span class="pillar-icon" aria-hidden="true">◆</span>
+              <h3>Public Awareness</h3>
+              <p class="pillar-summary">Educating communities with verifiable information and real-world impact stories.</p>
+              <span class="pillar-more">Explore public resources</span>
+            </summary>
+            <div class="pillar-details">
+              <p>Clear information helps people recognize how betting products and industry practices work, where to find safeguards, and what questions deserve scrutiny.</p>
+              <h4>What we aim to make clearer</h4>
+              <ul>
+                <li>How promotions, product design, and consumer terms can shape decisions.</li>
+                <li>Where to look for independent evidence, oversight, and available support.</li>
+                <li>Why individual stories connect to wider public-health and policy questions.</li>
+              </ul>
+              <a class="pillar-link" href="research.html">Explore the stories <span aria-hidden="true">→</span></a>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section class="image-section" id="reports">
+      <div class="wrap">
+        <header class="image-section-heading">
+          <h2>Investigative<br><span class="gold italic">Reports</span></h2>
+          <a class="section-link" href="https://bigjn.com/posts/">Read All Stories <span aria-hidden="true">→</span></a>
+        </header>
+        <div class="image-grid">
+          <a class="image-card" href="https://bigjn.com/posts/economic-impact-problem-gambling-europe">
+            <div class="image-card-photo"><img src="economic-impact.jpg" alt="Data analytics dashboard" loading="lazy" decoding="async" width="1200" height="900"></div>
+            <div class="image-card-copy">
+              <span class="image-card-rule"></span>
+              <h3>The Economic Impact of Problem Gambling in European Markets</h3>
+              <p>Comprehensive analysis of the social and economic costs associated with gambling addiction across 15 European countries, with policy recommendations for regulators.</p>
+              <span class="image-card-cta">Read the Full Story <span aria-hidden="true">→</span></span>
+            </div>
+          </a>
+          <a class="image-card" href="https://bigjn.com/posts/aml-failures-igaming-investigation">
+            <div class="image-card-photo"><img src="legal-research.jpg" alt="Legal documents and research papers" loading="lazy" decoding="async" width="1200" height="900"></div>
+            <div class="image-card-copy">
+              <span class="image-card-rule"></span>
+              <h3>AML Failures in the iGaming Sector: A Data-Driven Investigation</h3>
+              <p>Deep dive into anti-money laundering compliance failures across 50+ online gambling operators, revealing systemic vulnerabilities.</p>
+              <span class="image-card-cta">Read the Full Story <span aria-hidden="true">→</span></span>
+            </div>
+          </a>
+          <a class="image-card" href="https://bigjn.com/posts/real-cost-gambling-advertising-public-health">
+            <div class="image-card-photo"><img src="responsible-gambling.jpg" alt="Responsible gambling awareness concept" loading="lazy" decoding="async" width="1200" height="900"></div>
+            <div class="image-card-copy">
+              <span class="image-card-rule"></span>
+              <h3>The Real Cost of Gambling Advertising: A Public Health Perspective</h3>
+              <p>Examines the public health impact of gambling advertising and calls for stricter regulations to protect vulnerable populations.</p>
+              <span class="image-card-cta">Read the Full Story <span aria-hidden="true">→</span></span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapters" id="stories">
+      <div class="wrap">
+        <header class="section-heading">
+          <span class="eyebrow">Explore the issues</span>
+          <h2 style="margin-top:20px">Stories that <span class="gold italic">matter.</span></h2>
+          <p>Three fronts where evidence, lived experience, and accountability can change the conversation—and the rules.</p>
+        </header>
+        <div class="chapter-list">
+          <article class="chapter">
+            <span class="chapter-number">CHAPTER 01</span>
+            <h3>The Rise</h3>
+            <p class="chapter-subtitle">of i-gaming in emerging markets</p>
+            <p class="chapter-intro">Follow how rapid digital expansion reaches new communities—and whether consumer safeguards can keep pace.</p>
+            <div class="chapter-stories">
+              <article class="chapter-story">
+                <span class="chapter-story-label">Market access</span>
+                <h4>Betting in everyone’s pocket</h4>
+                <p>Examine how mobile-first platforms change access, spending habits, and the path from casual play to financial strain.</p>
+              </article>
+              <article class="chapter-story">
+                <span class="chapter-story-label">Cross-border growth</span>
+                <h4>When the operator is offshore</h4>
+                <p>Explore who answers for complaints, unpaid winnings, and consumer protection when platforms cross jurisdictions.</p>
+              </article>
+              <article class="chapter-story">
+                <span class="chapter-story-label">New audiences</span>
+                <h4>The next generation of bettors</h4>
+                <p>Investigate how sports, social media, and digital promotions shape young adults’ first encounters with betting.</p>
+              </article>
+            </div>
+            <a class="chapter-more" href="#reports">Explore related reports <span aria-hidden="true">→</span></a>
+          </article>
+          <article class="chapter">
+            <span class="chapter-number">CHAPTER 02</span>
+            <h3>The Hidden</h3>
+            <p class="chapter-subtitle">social cost to communities</p>
+            <p class="chapter-intro">Look beyond individual losses to the ripple effects felt by families, support services, and local communities.</p>
+            <div class="chapter-stories">
+              <article class="chapter-story">
+                <span class="chapter-story-label">Household impact</span>
+                <h4>The bills gambling leaves behind</h4>
+                <p>Trace how debt, secrecy, and financial pressure can affect partners, children, and the stability of a household.</p>
+              </article>
+              <article class="chapter-story">
+                <span class="chapter-story-label">Public health</span>
+                <h4>Finding help before crisis</h4>
+                <p>Ask whether people can access timely, affordable support—and what barriers prevent families from seeking help.</p>
+              </article>
+              <article class="chapter-story">
+                <span class="chapter-story-label">Community costs</span>
+                <h4>Who carries the burden?</h4>
+                <p>Explore how harms can reach workplaces, community services, and public resources far beyond a betting account.</p>
+              </article>
+            </div>
+            <a class="chapter-more" href="#reports">Explore related reports <span aria-hidden="true">→</span></a>
+          </article>
+          <article class="chapter">
+            <span class="chapter-number">CHAPTER 03</span>
+            <h3>Where Regulation</h3>
+            <p class="chapter-subtitle">fails the most</p>
+            <p class="chapter-intro">Test the promises of oversight against what consumers experience when rules are weak or enforcement falls short.</p>
+            <div class="chapter-stories">
+              <article class="chapter-story">
+                <span class="chapter-story-label">Enforcement</span>
+                <h4>Rules without consequences</h4>
+                <p>Follow how complaints are handled, where oversight has gaps, and whether regulators have the power to act.</p>
+              </article>
+              <article class="chapter-story">
+                <span class="chapter-story-label">Advertising</span>
+                <h4>Promotions with no clear owner</h4>
+                <p>Examine responsibility for affiliate marketing, misleading offers, and campaigns that reach vulnerable audiences.</p>
+              </article>
+              <article class="chapter-story">
+                <span class="chapter-story-label">Player protection</span>
+                <h4>Safer-play tools that miss the mark</h4>
+                <p>Investigate whether limits, self-exclusion, and warnings are accessible, effective, and honored across platforms.</p>
+              </article>
+            </div>
+            <a class="chapter-more" href="#reports">Explore related reports <span aria-hidden="true">→</span></a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section" id="decision-makers">
+      <div class="wrap">
+        <header class="section-heading">
+          <h2>Empowering the<br><span class="gold italic">Decision Makers</span></h2>
+        </header>
+        <div class="audiences">
+          <article class="audience">
+            <div class="audience-rule"></div>
+            <h3>Researchers</h3>
+            <p>Access structured, verifiable data across all markets.</p>
+            <div class="access">Priority Access</div>
+          </article>
+          <article class="audience">
+            <div class="audience-rule"></div>
+            <h3>Policy Makers</h3>
+            <p>Inform policy with real-world insights and evidence.</p>
+            <div class="access">Priority Access</div>
+          </article>
+          <article class="audience">
+            <div class="audience-rule"></div>
+            <h3>Advocates</h3>
+            <p>Amplify your cause with data-backed arguments.</p>
+            <div class="access">Priority Access</div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="community" id="community">
+      <div class="wrap">
+        <span class="eyebrow">Community Supported</span>
+        <blockquote class="quote">“A relentless pursuit of truth, giving a voice to the <span class="gold">communities impacted by the global betting industry.</span>”</blockquote>
+        <div class="partners" aria-label="Community partners">
+          <span>ResearchCenter</span><span>PolicyTrust</span><span>GlobalInsights</span><span>DataPrime</span><span>EthicsOrg</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="image-section alt" id="blog">
+      <div class="wrap">
+        <header class="image-section-heading">
+          <h2>From the<br><span class="gold italic">Blog</span></h2>
+          <a class="section-link" href="https://bigjn.com/posts/">View All Posts <span aria-hidden="true">→</span></a>
+        </header>
+        <div class="image-grid blog-grid">
+          <a class="image-card blog-card" href="https://bigjn.com/posts/responsible-gambling-tools-failing">
+            <div class="image-card-photo"><img src="responsible-gambling.jpg" alt="Responsible gambling awareness concept" loading="lazy" decoding="async" width="1200" height="750"></div>
+            <div class="image-card-copy">
+              <span class="blog-category">Harm Reduction</span>
+              <h3>Why Responsible Gambling Tools Are Failing a Generation</h3>
+              <p class="blog-date">MARCH 1, 2025</p>
+            </div>
+          </a>
+          <a class="image-card blog-card" href="https://bigjn.com/posts/public-benefit-corporations-gaming">
+            <div class="image-card-photo"><img src="community-team.jpg" alt="Team collaborating in a meeting room" loading="lazy" decoding="async" width="1200" height="750"></div>
+            <div class="image-card-copy">
+              <span class="blog-category">Industry Accountability</span>
+              <h3>The Case for Public Benefit Corporations in Gaming</h3>
+              <p class="blog-date">FEBRUARY 21, 2025</p>
+            </div>
+          </a>
+          <a class="image-card blog-card" href="https://bigjn.com/posts/consumer-rights-challenging-unfair-terms">
+            <div class="image-card-photo"><img src="policy-meeting.jpg" alt="Professional meeting in a conference room" loading="lazy" decoding="async" width="1200" height="750"></div>
+            <div class="image-card-copy">
+              <span class="blog-category">Consumer Rights</span>
+              <h3>Consumer Rights: Challenging Unfair Terms in Online Casinos</h3>
+              <p class="blog-date">FEBRUARY 14, 2025</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="join" id="join">
+      <div class="wrap">
+        <span class="eyebrow">Become a Contributor</span>
+        <h2>Join the <span class="gold italic">Network</span></h2>
+        <p>Stay informed with elite, evidence-based insights on gambling regulation and market intelligence.</p>
+        <div class="actions" style="justify-content:center">
+          <a class="button button-primary" href="contact.html">Get Involved <span class="arrow" aria-hidden="true">→</span></a>
+          <a class="button" href="research.html">Read Reports</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="contact-section" id="contact">
+      <div class="wrap">
+        <header class="contact-heading">
+          <span class="eyebrow">Contact the editorial desk</span>
+          <h2>Send a lead, a correction, or a note to the <span class="gold italic">editorial desk.</span></h2>
+          <p>BIGJN works best when readers, researchers, and insiders bring us grounded information. Reach out with verified tips, press requests, collaboration ideas, or anything that belongs in the record.</p>
+        </header>
+
+        <div class="contact-summary" aria-label="Contact information">
+          <div class="contact-summary-item"><span>Typical response</span><strong>24–48 hours</strong></div>
+          <div class="contact-summary-item"><span>Confidentiality</span><strong>Handled discreetly</strong></div>
+          <div class="contact-summary-item"><span>Coverage</span><strong>Global betting markets</strong></div>
+        </div>
+
+        <div class="contact-layout">
+          <aside class="contact-paths" aria-labelledby="contact-paths-title">
+            <header class="contact-panel-heading">
+              <span>Contact paths</span>
+              <h3 id="contact-paths-title">Choose the right channel, then send the note.</h3>
+            </header>
+            <div class="contact-path-list">
+              <article class="contact-path">
+                <span class="contact-path-icon" aria-hidden="true">✳</span>
+                <div><h4>Story tips</h4><p>Share verified leads, documents, or developments that deserve investigation.</p><a href="mailto:tips@bigjn.com">tips@bigjn.com</a></div>
+              </article>
+              <article class="contact-path">
+                <span class="contact-path-icon" aria-hidden="true">▤</span>
+                <div><h4>Press inquiries</h4><p>Requests for comment, interviews, or background on active coverage.</p><a href="mailto:press@bigjn.com">press@bigjn.com</a></div>
+              </article>
+              <article class="contact-path">
+                <span class="contact-path-icon" aria-hidden="true">✉</span>
+                <div><h4>General contact</h4><p>Partnerships, corrections, editorial notes, and everything in between.</p><a href="mailto:hello@bigjn.com">hello@bigjn.com</a></div>
+              </article>
+            </div>
+            <div class="contact-guidance">
+              <p><strong>Corrections:</strong> Include the specific passage and a reliable source.</p>
+              <p><strong>Tips:</strong> Names, dates, documents, and context help our team follow up.</p>
+              <p><strong>Partnerships:</strong> Tell us about your organization and the work you have in mind.</p>
+            </div>
+          </aside>
+
+          <form class="contact-form" id="contact-form">
+            <header class="contact-panel-heading">
+              <span>Message the desk</span>
+              <h3>Keep it concise. Keep it useful. Give us enough to follow.</h3>
+            </header>
+            <div class="contact-fields-row">
+              <div class="contact-field">
+                <label for="contact-name">Name</label>
+                <input id="contact-name" name="name" type="text" autocomplete="name" placeholder="Your name" required>
+              </div>
+              <div class="contact-field">
+                <label for="contact-email">Email</label>
+                <input id="contact-email" name="email" type="email" autocomplete="email" placeholder="your@email.com" required>
+              </div>
+            </div>
+            <div class="contact-field">
+              <label for="contact-topic">What is this about?</label>
+              <select id="contact-topic" name="topic">
+                <option value="hello@bigjn.com">General contact or correction</option>
+                <option value="tips@bigjn.com">A story tip</option>
+                <option value="press@bigjn.com">A press inquiry</option>
+              </select>
+            </div>
+            <div class="contact-field">
+              <label for="contact-subject">Subject</label>
+              <input id="contact-subject" name="subject" type="text" placeholder="What would you like to discuss?" required>
+            </div>
+            <div class="contact-field">
+              <label for="contact-message">Message</label>
+              <textarea id="contact-message" name="message" placeholder="Tell us what you found, what you need, or what you want to build." required></textarea>
+            </div>
+            <button class="button button-primary contact-submit" type="submit">Prepare email <span class="arrow" aria-hidden="true">→</span></button>
+            <p class="contact-form-note">Your default email app will open with your message ready to send. This page does not store submissions. Please don't send confidential documents through ordinary email.</p>
+            <p class="contact-status" id="contact-status" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <div class="footer-grid">
+        <div class="footer-about">
+          <h2 class="brand">BIGJN</h2>
+          <p class="footer-blurb">The decisive voice of gambling justice. Research, advocacy, and accountability for the betting and gaming industry.</p>
+        </div>
+        <div>
+          <h3 class="footer-title">Quick Links</h3>
+          <nav class="footer-links" aria-label="Quick links"><a href="research.html">Articles</a><a href="our-work.html">Our work</a><a href="contact.html">Contact</a></nav>
+        </div>
+        <div>
+          <h3 class="footer-title">Connect</h3>
+          <nav class="footer-links" aria-label="Connect"><a href="community.html">Community</a><a href="contact.html">Get involved</a></nav>
+        </div>
+      </div>
+      <div class="copyright">© 2026 BIGJN. All rights reserved.</div>
+    </div>
+  </footer>
+
+  <script>
+    const menuButton = document.querySelector(".menu-button");
+    const menuPanel = document.querySelector(".menu-panel");
+
+    function setMenuOpen(open) {
+      menuButton.setAttribute("aria-expanded", String(open));
+      menuPanel.setAttribute("aria-hidden", String(!open));
+      menuPanel.classList.toggle("open", open);
+      document.body.classList.toggle("menu-open", open);
+    }
+
+    menuButton.addEventListener("click", () => {
+      setMenuOpen(menuButton.getAttribute("aria-expanded") !== "true");
+    });
+
+    menuPanel.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => setMenuOpen(false));
+    });
+
+    document.querySelector("#contact-form").addEventListener("submit", (event) => {
+      event.preventDefault();
+      const formData = new FormData(event.currentTarget);
+      const recipient = formData.get("topic");
+      const subject = String(formData.get("subject"));
+      const body = [
+        `Name: ${formData.get("name")}`,
+        `Email: ${formData.get("email")}`,
+        "",
+        formData.get("message"),
+      ].join("\n");
+      const emailLink = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      document.querySelector("#contact-status").textContent = "Opening your email app...";
+      window.location.href = emailLink;
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && menuButton.getAttribute("aria-expanded") === "true") {
+        setMenuOpen(false);
+        menuButton.focus();
+      }
+    });
+  </script>
+</body>
+</html>
